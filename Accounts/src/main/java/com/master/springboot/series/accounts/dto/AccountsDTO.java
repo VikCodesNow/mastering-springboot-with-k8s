@@ -2,12 +2,15 @@ package com.master.springboot.series.accounts.dto;
 
 
 import com.master.springboot.series.accounts.entites.Accounts;
+import jakarta.validation.constraints.NotEmpty;
 import lombok.Data;
 
 @Data
 public class AccountsDTO {
     private Long accountNumber;
+    @NotEmpty(message = "Account Type cannot be null or empty")
     private String accountType;
+    @NotEmpty(message = "Address cannot be null or empty")
     private String branchAddress;
 
 

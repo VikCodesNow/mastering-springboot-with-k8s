@@ -7,5 +7,7 @@ public interface IAccountService {
 
     CustomerDTO fetchCustomer(String mobileNumber);
 
-    CustomerDTO updateCustomer(CustomerDTO customerDTO);
+    boolean updateCustomer(CustomerDTO customerDTO);
+
+    boolean deleteCustomer(String mobileNumber);
 }

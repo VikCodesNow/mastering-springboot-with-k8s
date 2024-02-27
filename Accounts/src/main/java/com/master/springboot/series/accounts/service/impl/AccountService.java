@@ -31,15 +31,11 @@ public class AccountService implements IAccountService {
            throw new CustomerAlreadyExists("Customer Already Exists");
        }
         Customer customer = CustomerDTO.mapToEntity(customerDTO,new Customer());
-        customer.setCreatedAt(LocalDateTime.now());
-        customer.setCreatedBy("Admin");
         Customer savedCustomer =   customerRepository.save(customer);
         Accounts account = new Accounts();
         account.setCustomerId(savedCustomer.getCustomerId());
         account.setAccountType(AccountsConstants.SAVINGS_ACCOUNT);
         account.setBranchAddress(AccountsConstants.BRANCH_ADDRESS);
-        account.setCreatedAt(LocalDateTime.now());
-        account.setCreatedBy("Admin");
         accountsRepository.save(account);
     }
 
@@ -54,15 +50,31 @@ public class AccountService implements IAccountService {
     }
 
     @Override
-    public CustomerDTO updateCustomer(CustomerDTO customerDTO) {
+    public boolean updateCustomer(CustomerDTO customerDTO) {
+        boolean isUpdated = false;
         AccountsDTO accountsDTO = customerDTO.getAccountsDTO();
         if(accountsDTO!=null) {
            Accounts account = accountsRepository.findById(accountsDTO.getAccountNumber()).orElseThrow(()->new AccountNotFound(String.format("Couldn't find account with account number %d",accountsDTO.getAccountNumber())));
             AccountsDTO.mapToEntity(accountsDTO,account);
-            account.setUpdatedAt(LocalDateTime.now());
-            account.setUpdatedBy("Admin");
+            Customer customer = customerRepository.findById(account.getCustomerId()).orElseThrow(()-> new CustomerNotFound(String.format("Couldn't find customer with account number %d",account.getAccountNumber())));
+            CustomerDTO.mapToEntity(customerDTO,customer);
+            customerRepository.save(customer);
+            isUpdated = true;
         }
-        Customer customer = customerRepository.findById(acc)
+        return isUpdated;
+    }
 
+    @Override
+    public boolean deleteCustomer(String mobileNumber) {
+        try
+        {
+            Customer customer =  customerRepository.findByMobileNumber(mobileNumber).orElseThrow(()->new CustomerNotFound(String.format("Couldn't find customer with mobile number %s",mobileNumber)));
+            accountsRepository.deleteByCustomerId(customer.getCustomerId());
+            customerRepository.deleteById(customer.getCustomerId());
+            return true;
+        }
+        catch (Exception e) {
+            return false;
+        }
     }
 }
