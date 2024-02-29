@@ -4,6 +4,8 @@ package com.master.springboot.series.accounts.controller;
 import com.master.springboot.series.accounts.dto.CustomerDTO;
 import com.master.springboot.series.accounts.dto.ResponseDTO;
 import com.master.springboot.series.accounts.service.IAccountService;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.Pattern;
 import lombok.Getter;
@@ -17,10 +19,14 @@ import org.springframework.web.bind.annotation.*;
 @RestController
 @Validated
 @RequestMapping(value = "/api/v1/account",produces = MediaType.APPLICATION_JSON_VALUE)
+@Tag(name = "Create and Manage Customer Accounts")
 public class AccountController {
 
     @Autowired
     private IAccountService accountService;
+   @Operation(
+           summary = "creates a customer with a new account"
+   )
     @PostMapping("/create")
     public ResponseEntity<ResponseDTO> createAccount(@Valid @RequestBody CustomerDTO customerDTO) {
         accountService.createAccount(customerDTO);
@@ -28,6 +34,9 @@ public class AccountController {
         return new ResponseEntity<>(dto,HttpStatus.CREATED);
     }
 
+    @Operation(
+            summary = "Fetches Customer and Account Details based on account number"
+    )
     @GetMapping("/fetch-customer")
     public ResponseEntity<CustomerDTO> fetchCustomer(@RequestParam
                                                      @Pattern(regexp = "$|[0-9]{10}",message = "Number should be 10 digit")
@@ -37,6 +46,9 @@ public class AccountController {
     return new ResponseEntity<>(dto,HttpStatus.OK);
     }
 
+    @Operation(
+            summary = "Updates Customer and Account Details"
+    )
     @PutMapping("/update")
     public ResponseEntity<ResponseDTO> updateCustomer(@Valid  @RequestBody CustomerDTO customerDT) {
       boolean res =   accountService.updateCustomer(customerDT);
@@ -46,6 +58,9 @@ public class AccountController {
         return  new ResponseEntity<>(ResponseDTO.builder().statusCode(HttpStatus.INTERNAL_SERVER_ERROR).statusMsg("Error Occurred").build(),HttpStatus.INTERNAL_SERVER_ERROR);
     }
 
+    @Operation(
+            summary = "Updates Customer and Account Details by mobile number"
+    )
     @DeleteMapping("/delete")
     public ResponseEntity<ResponseDTO> deleteCustomer(@RequestParam
                                                       @Pattern(regexp = "$|[0-9]{10}",message = "Number should be 10 digit")
