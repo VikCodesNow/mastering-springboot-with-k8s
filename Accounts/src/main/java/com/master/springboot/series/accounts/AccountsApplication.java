@@ -1,14 +1,17 @@
 package com.master.springboot.series.accounts;
 
+import com.master.springboot.series.accounts.dto.AccountsAPIDTO;
 import io.swagger.v3.oas.annotations.OpenAPIDefinition;
 import io.swagger.v3.oas.annotations.info.Contact;
 import io.swagger.v3.oas.annotations.info.Info;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.data.jpa.repository.config.EnableJpaAuditing;
 
 @SpringBootApplication
 @EnableJpaAuditing(auditorAwareRef = "auditAwareImpl")
+@EnableConfigurationProperties(value = {AccountsAPIDTO.class})
 @OpenAPIDefinition(info = @Info(
 		title = "Account Service",
 		description = "Creating and updating of customer Accounts",
