@@ -1,6 +1,7 @@
 package com.master.springboot.series.accounts.controller;
 
 
+import com.master.springboot.series.accounts.dto.AccountsAPIDTO;
 import com.master.springboot.series.accounts.dto.CustomerDTO;
 import com.master.springboot.series.accounts.dto.ResponseDTO;
 import com.master.springboot.series.accounts.service.IAccountService;
@@ -24,6 +25,9 @@ public class AccountController {
 
     @Autowired
     private IAccountService accountService;
+
+    @Autowired
+    AccountsAPIDTO apidto;
    @Operation(
            summary = "creates a customer with a new account"
    )
@@ -71,5 +75,13 @@ public class AccountController {
             return  new ResponseEntity<>(ResponseDTO.builder().statusCode(HttpStatus.OK).statusMsg("Deleted Successfully").build(),HttpStatus.OK);
         }
         return  new ResponseEntity<>(ResponseDTO.builder().statusCode(HttpStatus.INTERNAL_SERVER_ERROR).statusMsg("Error Occurred").build(),HttpStatus.INTERNAL_SERVER_ERROR);
+    }
+
+    @Operation(
+            summary = "Fetches Customer and Account Details based on account number"
+    )
+    @GetMapping("/api-version")
+    public ResponseEntity<AccountsAPIDTO> version() {
+       return new ResponseEntity<>(apidto,HttpStatus.OK);
     }
 }

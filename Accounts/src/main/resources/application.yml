@@ -12,3 +12,7 @@ spring:
     hibernate:
       ddl-auto: update
     show-sql: true
+
+accounts:
+  env: local
+  version: 0.0.1

@@ -1,0 +1,8 @@
+spring:
+  config:
+    activate:
+      on-profile: "qa"
+
+accounts:
+  env: qa
+  version: 0.0.1
