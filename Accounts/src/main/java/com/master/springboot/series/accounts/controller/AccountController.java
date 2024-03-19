@@ -1,7 +1,7 @@
 package com.master.springboot.series.accounts.controller;
 
 
-import com.master.springboot.series.accounts.dto.AccountsAPIDTO;
+import com.master.springboot.series.accounts.dto.AccountsApiIDto;
 import com.master.springboot.series.accounts.dto.CustomerDTO;
 import com.master.springboot.series.accounts.dto.ResponseDTO;
 import com.master.springboot.series.accounts.service.IAccountService;
@@ -9,7 +9,6 @@ import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.Pattern;
-import lombok.Getter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -27,7 +26,7 @@ public class AccountController {
     private IAccountService accountService;
 
     @Autowired
-    AccountsAPIDTO apidto;
+    AccountsApiIDto apidto;
    @Operation(
            summary = "creates a customer with a new account"
    )
@@ -81,7 +80,7 @@ public class AccountController {
             summary = "Fetches Customer and Account Details based on account number"
     )
     @GetMapping("/api-version")
-    public ResponseEntity<AccountsAPIDTO> version() {
+    public ResponseEntity<AccountsApiIDto> version() {
        return new ResponseEntity<>(apidto,HttpStatus.OK);
     }
 }
